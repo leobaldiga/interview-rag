@@ -1,0 +1,83 @@
+project:
+  name: farmer-interview-rag
+  description: RAG pipeline for coding farmer interview transcripts with a fixed P-S-T schema
+  seed: 42
+
+paths:
+  raw_transcripts_dir: data/raw/transcripts
+  cleaned_dir: data/interim/cleaned
+  chunked_dir: data/interim/chunked
+  embeddings_dir: data/processed/embeddings
+  index_dir: data/processed/index
+  manifest_dir: data/processed/manifests
+  outputs_dir: outputs
+  coded_transcripts_dir: outputs/coded_transcripts
+  chunk_codes_dir: outputs/chunk_codes
+  retrieval_logs_dir: outputs/retrieval_logs
+  summaries_dir: outputs/summaries
+  audits_dir: outputs/audits
+  logs_dir: logs
+
+llm:
+  provider: llama_cpp_server
+  base_url: http://localhost:8080/v1
+  model: gpt-3.5-turbo
+  api_key: no-key
+  temperature: 0.35
+  top_p: 0.9
+  max_tokens: 4096
+  stream: false
+  timeout_seconds: 1800
+
+embedding:
+  provider: llama_cpp_server
+  base_url: http://localhost:8081
+  endpoint: /embedding
+  api_key: no-key
+  model_name: bge-small-en-v1.5
+  batch_size: 32
+  timeout_seconds: 600
+  normalize: true
+
+chunking:
+  method: paragraph_window
+  target_chars: 2200
+  overlap_chars: 350
+  min_chunk_chars: 600
+  max_chunk_chars: 3200
+  split_on:
+    - "\n\n"
+    - "\n"
+  preserve_speaker_turns: true
+  attach_char_offsets: true
+
+retrieval:
+  top_k: 8
+  candidate_pool: 20
+  similarity_metric: cosine
+  min_similarity: 0.20
+  merge_adjacent_chunks: true
+  adjacent_window: 1
+  deduplicate_chunks: true
+
+coding:
+  mode: chunk_level
+  allow_multiple_tags_per_span: true
+  require_evidence_for_each_tag: true
+  include_schema_in_prompt: true
+  include_transcript_metadata: true
+  output_format: tagged_text
+  save_jsonl: true
+  save_markdown: true
+
+prompts:
+  system_prompt_file: config/prompts/system_prompt.txt
+  coding_prompt_file: config/prompts/coding_prompt.txt
+  review_prompt_file: config/prompts/review_prompt.txt
+
+run:
+  overwrite_existing: false
+  save_raw_prompt: true
+  save_raw_response: true
+  log_retrieved_context: true
+  create_run_manifest: true

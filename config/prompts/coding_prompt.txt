@@ -1,0 +1,10 @@
+Code the provided transcript excerpt using only the supplied P-S-T schema.
+
+Rules:
+1. Insert one or more applicable <P-S-T> tags immediately after the relevant text span.
+2. Use only tags that are explicitly supported by the schema.
+3. Apply multiple tags when the text clearly supports more than one code.
+4. Prefer recall when evidence is explicit, but do not invent tags.
+5. Preserve the original wording of the excerpt as much as possible.
+6. Output only the excerpt with inline tags inserted.
+7. Do not add commentary, headings, explanation, or summary.

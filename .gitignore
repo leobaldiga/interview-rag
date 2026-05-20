@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+.env
+
+# Project outputs
+data/metadata/*
+data/raw/*
+data/processed/embeddings/*
+data/processed/index/*
+outputs/*
+logs/*.log
+
+# Keep folder structure
+!outputs/.gitkeep
+!outputs/coded_transcripts/.gitkeep
+!outputs/chunk_codes/.gitkeep
+!outputs/retrieval_logs/.gitkeep
+!outputs/summaries/.gitkeep
+!outputs/audits/.gitkeep
+
+# Jupyter
+.ipynb_checkpoints/

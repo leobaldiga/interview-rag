@@ -1,0 +1,122 @@
+{
+  "schema_key": {
+    "P_AOP": "Agricultural Operation & Practice",
+    "P_SH": "Soil Health",
+    "P_MSK": "Management Systems and Knowledge",
+    "P_RRM": "Resilience and Risk Management",
+    "P_CEF": "Climate and External Factors",
+    "P_FOSC": "Future Outlook and System Change"
+  },
+  "tag_hierarchy": {
+    "P_AOP": {
+      "S_FBH": {
+        "T": [
+          "AOP-FBH-Farm history and evolution",
+          "AOP-FBH-Farmer identity and motivation",
+          "AOP-FBH-Current farming activities overview"
+        ]
+      },
+      "S_CMP": {
+        "T": [
+          "AOP-CMD-Crop selection rationale",
+          "AOP-CMD-Rotational planning and strategy",
+          "AOP-CMD-Nutrient application methods"
+        ]
+      },
+      "S_RM": {
+        "T": [
+          "AOP-RM-Water usage and irrigation practices",
+          "AOP-RM-Soil structure and land topography",
+          "AOP-RM-Pest and disease management methods",
+          "AOP-RM-Tillage practices and timing"
+        ]
+      }
+    },
+    "P_SH": {
+      "S_SDI": {
+        "T": [
+          "SH-SHDI-Farmer definition of soil health",
+          "SH-SHDI-Perceived benefits of soil health"
+        ]
+      },
+      "S_SHIM": {
+        "T": [
+          "SH-SHIM-Observed soil health signs (physical/chemical)",
+          "SH-SHPI-Impact of specific practices on soil biology"
+        ]
+      },
+      "S_SHPR": {
+        "T": [
+          "SH-SHPR-Soil Health Practices and Inputs",
+          "SH-SHPI-Nutrient retention strategies"
+        ]
+      }
+    },
+    "P_MSK": {
+      "S_DMP": {
+        "T": [
+          "MSK-DMP-Sources of agricultural knowledge (farmer/expert)",
+          "MSK-DMP-Adoption of technology and innovation"
+        ]
+      },
+      "S_MCR": {
+        "T": [
+          "MSK-MCB-Financial barriers to adoption",
+          "MSK-MCB-Risk perception in adopting new practices"
+        ]
+      },
+      "S_NIM": {
+        "T": [
+          "MSK-NIM-Nutrient management strategies (timing, type)",
+          "MSK-NIM-Integrated Pest Management (IPM) implementation"
+        ]
+      }
+    },
+    "P_RRM": {
+      "S_URR": {
+        "T": [
+          "RRM-URR-Farmer definition of resilience",
+          "RRM-URR-Factors contributing to farm stability"
+        ]
+      },
+      "S_AES": {
+        "T": [
+          "RRM-AES-Mitigation strategies for climate variability",
+          "RRM-AES-Risk tolerance in farming decisions"
+        ]
+      }
+    },
+    "P_CEF": {
+      "S_CCP": {
+        "T": [
+          "CEF-CCP-Perceived long-term climate trends",
+          "CEF-CCP-Need for climate-specific knowledge"
+        ]
+      },
+      "S_WEI": {
+        "T": [
+          "CEF-WEI-Experience with extreme weather (drought, flood, heat)"
+        ]
+      }
+    },
+    "P_FOSC": {
+      "S_FPS": {
+        "T": [
+          "FOSC-FPS-Long-term operational plans (5, 10+ years)",
+          "FOSC-DSC-Economic pressures driving change (cost, profit)"
+        ]
+      },
+      "S_DSC": {
+        "T": [
+          "FOSC-DSC-Policy and regulatory influence",
+          "FOSC-DSC-Economic pressures driving change (cost, profit)"
+        ]
+      },
+      "S_KES": {
+        "T": [
+          "KES-Role of universities/research in farming"
+        ]
+      }
+    }
+  }
+}
