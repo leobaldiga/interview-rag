@@ -10,111 +10,197 @@
   "tag_hierarchy": {
     "P_AOP": {
       "S_FBH": {
+        "_comment": "Farm Basics and History — covers farmer identity and motivation, farm history and generational context, and current operation overview including farm size, tenure, and crop mix",
         "T": [
           "AOP-FBH-Farm history and evolution",
           "AOP-FBH-Farmer identity and motivation",
-          "AOP-FBH-Current farming activities overview"
+          "AOP-FBH-Current farming activities overview",
+          "AOP-FBH-Land tenure and ownership structure",
+          "AOP-FBH-Farm size and scale of operation"
         ]
       },
       "S_CMP": {
+        "_comment": "Crop Management Decisions — covers crop selection, rotational planning, and nutrient application strategies in the context of US row crop systems (corn, soybean, wheat)",
         "T": [
           "AOP-CMD-Crop selection rationale",
           "AOP-CMD-Rotational planning and strategy",
-          "AOP-CMD-Nutrient application methods"
+          "AOP-CMD-Nutrient application methods",
+          "AOP-CMD-Input usage decisions (fertilizer, seed, chemicals)",
+          "AOP-CMD-Cover crop integration decisions"
         ]
       },
       "S_RM": {
+        "_comment": "Resource Management — covers water, soil structure, pest/disease control, tillage practices, labor, and input cost management as key operational resource concerns",
         "T": [
           "AOP-RM-Water usage and irrigation practices",
           "AOP-RM-Soil structure and land topography",
           "AOP-RM-Pest and disease management methods",
-          "AOP-RM-Tillage practices and timing"
+          "AOP-RM-Tillage practices and timing",
+          "AOP-RM-Labor availability and workforce management",
+          "AOP-RM-Input cost management and sourcing decisions"
+        ]
+      },
+      "S_PAT": {
+        "_comment": "Precision Agriculture and Technology Use — covers adoption of GPS, variable rate application, sensors, drones, and farm management software common in US row crop operations",
+        "T": [
+          "AOP-PAT-GPS and variable rate technology use",
+          "AOP-PAT-Remote sensing and drone adoption",
+          "AOP-PAT-Farm management software and data platforms",
+          "AOP-PAT-Barriers to precision agriculture adoption"
         ]
       }
     },
     "P_SH": {
       "S_SDI": {
+        "_comment": "Soil Health Definition and Importance — covers how farmers define soil health and perceive its benefits for productivity and long-term land value in row crop systems",
         "T": [
           "SH-SHDI-Farmer definition of soil health",
-          "SH-SHDI-Perceived benefits of soil health"
+          "SH-SHDI-Perceived benefits of soil health",
+          "SH-SHDI-Impact of soil health on productivity and resilience"
         ]
       },
       "S_SHIM": {
+        "_comment": "Soil Health Indicators and Measurement — covers observed physical/chemical signs, reliance on soil testing vs. field observation, and knowledge gaps around biological indicators",
         "T": [
           "SH-SHIM-Observed soil health signs (physical/chemical)",
+          "SH-SHIM-Reliance on soil testing vs. farmer observation",
+          "SH-SHIM-Knowledge gaps regarding soil health metrics",
           "SH-SHPI-Impact of specific practices on soil biology"
         ]
       },
       "S_SHPR": {
+        "_comment": "Soil Health Practices and Inputs — covers conservation practice adoption (no-till, cover crops, reduced tillage), organic matter management, and nutrient retention strategies",
         "T": [
-          "SH-SHPR-Soil Health Practices and Inputs",
-          "SH-SHPI-Nutrient retention strategies"
+          "SH-SHPR-Conservation practices adoption (no-till, cover crop)",
+          "SH-SHPR-Organic matter management",
+          "SH-SHPI-Nutrient retention strategies",
+          "SH-SHPR-Tile drainage and water table management"
         ]
       }
     },
     "P_MSK": {
       "S_DMP": {
+        "_comment": "Decision-Making Processes — covers knowledge sources including agronomists, extension agents, crop consultants, and input dealers, as well as technology and data-driven decision-making common in US row crop contexts",
         "T": [
-          "MSK-DMP-Sources of agricultural knowledge (farmer/expert)",
-          "MSK-DMP-Adoption of technology and innovation"
+          "MSK-DMP-Sources of agricultural knowledge (agronomist/extension/dealer)",
+          "MSK-DMP-Role of crop consultants and agronomists",
+          "MSK-DMP-Adoption of technology and precision ag innovation",
+          "MSK-DMP-Influence of market trends and commodity prices on decisions",
+          "MSK-DMP-Intergenerational and family knowledge transfer",
+          "MSK-DMP-Community and Informal exchange with other farmers"
         ]
       },
       "S_MCR": {
+        "_comment": "Management Challenges and Barriers — covers financial barriers, risk perception, labor constraints, and bureaucratic/certification hurdles in adopting new practices in US farm policy contexts",
         "T": [
           "MSK-MCB-Financial barriers to adoption",
-          "MSK-MCB-Risk perception in adopting new practices"
+          "MSK-MCB-Risk perception in adopting new practices",
+          "MSK-MCB-Labor and time constraints as barriers",
+          "MSK-MCB-Bureaucratic and certification barriers (USDA, NRCS programs)",
+          "MSK-MCB-Knowledge and information access limitations"
         ]
       },
       "S_NIM": {
+        "_comment": "Nutrient and Input Management — covers nitrogen and phosphorus management timing and application methods, fertilizer efficiency, and IPM in the context of Midwestern row crop systems and regulatory nutrient management pressures",
         "T": [
-          "MSK-NIM-Nutrient management strategies (timing, type)",
-          "MSK-NIM-Integrated Pest Management (IPM) implementation"
+          "MSK-NIM-Nutrient management strategies (timing, type, placement)",
+          "MSK-NIM-Fertilizer efficiency and waste reduction",
+          "MSK-NIM-Integrated Pest Management (IPM) implementation",
+          "MSK-NIM-Herbicide resistance management"
         ]
       }
     },
     "P_RRM": {
       "S_URR": {
+        "_comment": "Understanding Resilience — covers how US row crop farmers define resilience in terms of financial stability, operational continuity, and ability to recover from yield loss or price shocks",
         "T": [
           "RRM-URR-Farmer definition of resilience",
-          "RRM-URR-Factors contributing to farm stability"
+          "RRM-URR-Factors contributing to farm financial stability",
+          "RRM-URR-Relationship between resilience and farm succession"
         ]
       },
       "S_AES": {
+        "_comment": "Adapting to Environmental Shocks — covers responses to extreme weather events, mitigation strategies for climate variability, and risk tolerance in production and financial decisions",
         "T": [
           "RRM-AES-Mitigation strategies for climate variability",
-          "RRM-AES-Risk tolerance in farming decisions"
+          "RRM-AES-Risk tolerance in farming decisions",
+          "RRM-AES-Response to severe weather events (drought, flood, late frost)",
+          "RRM-AES-Crop insurance use and risk transfer strategies"
+        ]
+      },
+      "S_LSG": {
+        "_comment": "Long-term Sustainability Goals — covers ecological health goals, economic viability and farm succession planning, and community/social dimensions of farming as a livelihood in rural US contexts",
+        "T": [
+          "RRM-LSG-Goals for ecological and soil health",
+          "RRM-LSG-Goals for long-term economic viability",
+          "RRM-LSG-Farm succession and next-generation planning",
+          "RRM-LSG-Social and community impacts of farming decisions"
         ]
       }
     },
     "P_CEF": {
       "S_CCP": {
+        "_comment": "Climate Change Perception and Concern — covers perceived long-term climate trends, impacts on crop yield and soil health, and need for climate-specific agronomic knowledge in US Midwest/Great Plains contexts",
         "T": [
           "CEF-CCP-Perceived long-term climate trends",
-          "CEF-CCP-Need for climate-specific knowledge"
+          "CEF-CCP-Impacts on crop yield and growing season",
+          "CEF-CCP-Need for climate-specific agronomic knowledge"
         ]
       },
       "S_WEI": {
+        "_comment": "Weather Extremes and Impact — covers direct experience with drought, flooding, late frosts, and heat stress, and how these shape operational and investment decisions",
         "T": [
-          "CEF-WEI-Experience with extreme weather (drought, flood, heat)"
+          "CEF-WEI-Experience with extreme weather (drought, flood, heat, frost)",
+          "CEF-WEI-Predictive uncertainty and planning challenges",
+          "CEF-WEI-Adaptation measures taken in response to weather events"
+        ]
+      },
+      "S_MKT": {
+        "_comment": "Market and Policy Factors — covers commodity price volatility, input supply chain disruptions, crop insurance programs, and USDA/FSA/conservation program influence as external drivers of row crop farm decisions",
+        "T": [
+          "CEF-MKT-Commodity price volatility and market access",
+          "CEF-MKT-Input supply chain disruptions and cost increases",
+          "CEF-MKT-Influence of USDA, FSA, and conservation program incentives",
+          "CEF-MKT-Crop insurance programs and coverage decisions",
+          "CEF-MKT-Relationship with grain elevators and commodity buyers"
         ]
       }
     },
     "P_FOSC": {
       "S_FPS": {
+        "_comment": "Future Planning and Strategy — covers long-term operational plans, hypothetical practice shifts (e.g., transitioning to no-till or cover crops at scale), and strategies for navigating economic and climate uncertainty",
         "T": [
           "FOSC-FPS-Long-term operational plans (5, 10+ years)",
-          "FOSC-DSC-Economic pressures driving change (cost, profit)"
+          "FOSC-FPS-Hypothetical future practices and transition scenarios",
+          "FOSC-FPS-Strategies for navigating economic and climate uncertainty"
         ]
       },
       "S_DSC": {
+        "_comment": "Drivers of System Change — covers economic and environmental pressures, policy and regulatory influence (conservation compliance, nutrient loss reduction goals), and market incentives driving practice transitions",
         "T": [
-          "FOSC-DSC-Policy and regulatory influence",
-          "FOSC-DSC-Economic pressures driving change (cost, profit)"
+          "FOSC-DSC-Economic pressures driving change (cost, profit margins)",
+          "FOSC-DSC-Environmental pressures and conservation compliance",
+          "FOSC-DSC-Policy and regulatory influence (state nutrient rules, federal conservation programs)",
+          "FOSC-DSC-Market and buyer incentives for sustainable practices"
         ]
       },
       "S_KES": {
+        "_comment": "Knowledge Exchange and Support — covers the role of land-grant universities, extension services, NRCS, and industry agronomists in farmer education, as well as farmer-to-farmer learning networks and trust in different knowledge sources",
         "T": [
-          "KES-Role of universities/research in farming"
+          "FOSC-KES-Role of land-grant universities and extension services",
+          "FOSC-KES-Role of NRCS and government technical assistance",
+          "FOSC-KES-Farmer-to-farmer knowledge transfer and networks",
+          "FOSC-KES-Trust in institutional vs. industry vs. peer knowledge",
+          "FOSC-KES-Need for targeted agronomic education and demonstration"
+        ]
+      },
+      "S_FAG": {
+        "_comment": "Farmer Agency and Identity in Change — covers how US row crop farmers perceive their own role in driving or resisting system change, how farming identity and legacy shape willingness to transition practices, and attitudes toward being seen as early adopters or conservators of tradition",
+        "T": [
+          "FOSC-FAG-Perceived personal agency in system change",
+          "FOSC-FAG-Farming identity and legacy as barrier or enabler of transition",
+          "FOSC-FAG-Attitudes toward being an early adopter vs. conventional farmer",
+          "FOSC-FAG-Willingness to engage with policy or advocacy"
         ]
       }
     }
