@@ -65,22 +65,43 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Code transcript txt files with llama.cpp")
     parser.add_argument(
         "--file",
-        dest="target_file",
-        help="Optional single transcript filename to process from data/raw/transcripts/",
+        dest="target_files",
+        nargs="+",
+        help=(
+            "One or more transcript filenames to process from "
+            f"{raw_dir} (e.g. 20260311_ARINT009_clean.txt)"
+        ),
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Show which transcripts would be processed, but do not call the model or write outputs.",
     )
     args = parser.parse_args()
 
-    if args.target_file:
-        target_path = raw_dir / args.target_file
-        if not target_path.is_file():
-            print(f"Requested file not found: {target_path}")
+    if args.target_files:
+        txt_files: list[Path] = []
+        for name in args.target_files:
+            target_path = raw_dir / name
+            if not target_path.is_file():
+                print(f"Requested file not found or not a file: {target_path}")
+                continue
+            txt_files.append(target_path)
+
+        if not txt_files:
+            print("No valid --file targets found, nothing to do.")
             return
-        txt_files = [target_path]
     else:
         txt_files = sorted(raw_dir.glob("*.txt"))
 
     if not txt_files:
         print(f"No .txt transcripts found in {raw_dir}")
+        return
+
+    if args.dry_run:
+        print("Dry run: would process the following transcripts (in order):")
+        for p in txt_files:
+            print(f"  - {p.name}")
         return
 
     run_id = datetime.now().strftime("%Y-%m-%d_%H%M%S")

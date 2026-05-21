@@ -23,10 +23,10 @@ def chunk_transcript(
     text = normalize_text(raw_text)
     paragraphs = split_paragraphs(text)
 
-    target_chars = int(chunk_config.get("target_chars", 2200))
+    target_chars = int(chunk_config.get("target_chars", 3500))
     overlap_chars = int(chunk_config.get("overlap_chars", 350))
-    min_chunk_chars = int(chunk_config.get("min_chunk_chars", 600))
-    max_chunk_chars = int(chunk_config.get("max_chunk_chars", 3200))
+    min_chunk_chars = int(chunk_config.get("min_chunk_chars", 1600))
+    max_chunk_chars = int(chunk_config.get("max_chunk_chars", 4200))
 
     chunks: List[Dict] = []
     current_parts: List[str] = []
