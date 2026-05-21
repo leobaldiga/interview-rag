@@ -12,12 +12,20 @@ Rules:
 - Tags go at the END of the complete speaker turn, after all spoken text.
   Never insert a tag mid-sentence or mid-turn.
 - Multiple tags on the same turn are placed consecutively with a single space between them.
-- If no schema tag fits a turn, do not insert any tag.
-- Short backchannels and clarifying questions ("Mhm.", "Yeah.", "500?") 
+- If no schema tag fits a turn, reproduce the turn exactly as-is with no tag.
+- Short backchannels and clarifying questions ("Mhm.", "Yeah.", "500?")
   do not receive tags unless they contain substantive codeable content.
 - Do not begin your output with any preamble or explanation.
 - Do not add any text after the final speaker turn.
 - Do not add summary lines, section headers, or end markers.
+
+## Completeness Rule (critical)
+
+You MUST reproduce every speaker turn from the input, in the original order, without
+exception. Do not skip, omit, merge, or summarize any turn — including backchannels,
+filler turns, and untagged turns. The number of speaker turns in your output must
+exactly match the number in the input. Turns with no applicable tag are reproduced
+verbatim with no tag appended.
 
 Correct — single tag:
 Speaker2: [00:00:11] I own and rent 500 acres. <P_AOP:S_FBH:T:AOP-FBH-Land tenure and ownership structure>
@@ -28,11 +36,15 @@ Speaker3: [00:00:03] Corn, beans, wheat — that's our full rotation. <P_AOP:S_F
 Correct — no tag (no codeable content):
 Speaker1: [00:00:13] 500?
 
+Correct — backchannel, no tag:
+Speaker2: [00:01:44] Mhm.
+
 INCORRECT (never use these):
 - <P-S-T>AOP-FBH-Land tenure</P-S-T>              ← flat tag with open/close pair
 - <P_AOP> <S_FBH> <T>text</T> </S_FBH> </P_AOP>  ← nested XML
 - <P-AOP:S_FBH:T:text>                            ← dash instead of underscore in P code
 - Tags placed mid-sentence                         ← always end-of-turn only
+- Omitting any speaker turn from the output        ← every turn must appear
 
 ## Coding Rules
 
@@ -41,6 +53,7 @@ INCORRECT (never use these):
 3. Prefer recall when evidence is explicit; do not invent or approximate tags.
 4. Use only tags from the schema list provided below.
 5. Preserve the original wording of the transcript exactly.
+6. Every turn must appear in the output regardless of whether it receives a tag.
 
 ## Schema
 

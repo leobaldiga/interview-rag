@@ -16,7 +16,7 @@ def code_with_llama(messages: List[Dict], llm_config: Dict) -> str:
         "messages": messages,
         "temperature": llm_config.get("temperature", 1.0),
         "top_p": llm_config.get("top_p", 0.95),
-        "max_tokens": llm_config.get("max_tokens", 4096),
+        "max_tokens": llm_config.get("max_tokens", 8192),
         "stream": llm_config.get("stream", False),
         # Gemma 4 / llama.cpp extended sampling parameters
         "top_k": llm_config.get("top_k", 64),
@@ -80,11 +80,21 @@ def code_with_llama(messages: List[Dict], llm_config: Dict) -> str:
             "The model may have stopped early or the max_tokens limit was hit immediately."
         )
 
+    finish_reason = data["choices"][0].get("finish_reason", "unknown")
     usage = data.get("usage", {})
+
     print(
         f"    ↳ {elapsed:.1f}s | "
         f"prompt={usage.get('prompt_tokens', '?')} tokens | "
-        f"completion={usage.get('completion_tokens', '?')} tokens"
+        f"completion={usage.get('completion_tokens', '?')} tokens | "
+        f"finish={finish_reason}"
     )
+
+    if finish_reason == "length":
+        print(
+            f"    ⚠️  WARNING: output truncated (finish_reason=length). "
+            f"Consider increasing max_tokens in settings.yaml "
+            f"(current: {llm_config.get('max_tokens', 8192)})"
+        )
 
     return content

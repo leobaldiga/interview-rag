@@ -18,7 +18,7 @@ def split_paragraphs(text: str) -> List[str]:
 def chunk_transcript(
     raw_text: str,
     transcript_id: str,
-    chunk_config: Dict
+    chunk_config: Dict,
 ) -> List[Dict]:
     text = normalize_text(raw_text)
     paragraphs = split_paragraphs(text)
@@ -41,25 +41,29 @@ def chunk_transcript(
             current_text = candidate
             continue
 
+        # Flush current chunk if it meets minimum size
         if current_text and len(current_text) >= min_chunk_chars:
-            chunk_end = chunk_start + len(current_text)
+            chunk_text = current_text[:max_chunk_chars]
+            chunk_end = chunk_start + len(chunk_text)
             chunk_id = f"{transcript_id}__{len(chunks):05d}"
             chunks.append(
                 {
                     "transcript_id": transcript_id,
                     "chunk_id": chunk_id,
-                    "text": current_text[:max_chunk_chars],
+                    "text": chunk_text,
                     "start_char": chunk_start,
                     "end_char": chunk_end,
                 }
             )
-
             overlap_text = current_text[-overlap_chars:] if overlap_chars > 0 else ""
             current_text = f"{overlap_text}\n\n{para}".strip() if overlap_text else para
             current_parts = [current_text]
             chunk_start = max(0, chunk_end - len(overlap_text))
+
         else:
+            # Current text too small to flush alone — force-combine with para
             forced = candidate[:max_chunk_chars]
+            remainder = candidate[max_chunk_chars:].strip()
             chunk_end = chunk_start + len(forced)
             chunk_id = f"{transcript_id}__{len(chunks):05d}"
             chunks.append(
@@ -71,19 +75,20 @@ def chunk_transcript(
                     "end_char": chunk_end,
                 }
             )
-            remainder = candidate[max_chunk_chars:].strip()
             current_text = remainder
             current_parts = [remainder] if remainder else []
             chunk_start = chunk_end
 
+    # Flush any remaining text
     if current_text.strip():
-        chunk_end = chunk_start + len(current_text)
+        chunk_text = current_text[:max_chunk_chars]
+        chunk_end = chunk_start + len(chunk_text)
         chunk_id = f"{transcript_id}__{len(chunks):05d}"
         chunks.append(
             {
                 "transcript_id": transcript_id,
                 "chunk_id": chunk_id,
-                "text": current_text[:max_chunk_chars],
+                "text": chunk_text,
                 "start_char": chunk_start,
                 "end_char": chunk_end,
             }
