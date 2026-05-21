@@ -1,10 +1,47 @@
-Code the provided transcript excerpt using only the supplied P-S-T schema.
+Code the provided transcript excerpt using only the supplied P-S-T schema below.
+
+## Output Format (follow exactly)
+
+Tag format: <P_PRIMARY:S_SECONDARY:T:TERTIARY-TAG-TEXT>
 
 Rules:
-1. Insert one or more applicable <P-S-T> tags immediately after the relevant text span.
-2. Use only tags that are explicitly supported by the schema.
-3. Apply multiple tags when the text clearly supports more than one code.
-4. Prefer recall when evidence is explicit, but do not invent tags.
-5. Preserve the original wording of the excerpt as much as possible.
-6. Output only the excerpt with inline tags inserted.
-7. Do not add commentary, headings, explanation, or summary.
+- Use underscores in primary and secondary codes: P_AOP, S_FBH, S_CMP, etc.
+- Use colons between hierarchy levels: P_AOP:S_FBH:T:
+- Tertiary tag text must be copied VERBATIM from the schema. Do not paraphrase or invent.
+- Tags are self-closing — no separate closing tag.
+- Tags go at the END of the complete speaker turn, after all spoken text.
+  Never insert a tag mid-sentence or mid-turn.
+- Multiple tags on the same turn are placed consecutively with a single space between them.
+- If no schema tag fits a turn, do not insert any tag.
+- Short backchannels and clarifying questions ("Mhm.", "Yeah.", "500?") 
+  do not receive tags unless they contain substantive codeable content.
+- Do not begin your output with any preamble or explanation.
+- Do not add any text after the final speaker turn.
+- Do not add summary lines, section headers, or end markers.
+
+Correct — single tag:
+Speaker2: [00:00:11] I own and rent 500 acres. <P_AOP:S_FBH:T:AOP-FBH-Land tenure and ownership structure>
+
+Correct — multiple tags:
+Speaker3: [00:00:03] Corn, beans, wheat — that's our full rotation. <P_AOP:S_FBH:T:AOP-FBH-Current farming activities overview> <P_AOP:S_CMP:T:AOP-CMD-Rotational planning and strategy>
+
+Correct — no tag (no codeable content):
+Speaker1: [00:00:13] 500?
+
+INCORRECT (never use these):
+- <P-S-T>AOP-FBH-Land tenure</P-S-T>              ← flat tag with open/close pair
+- <P_AOP> <S_FBH> <T>text</T> </S_FBH> </P_AOP>  ← nested XML
+- <P-AOP:S_FBH:T:text>                            ← dash instead of underscore in P code
+- Tags placed mid-sentence                         ← always end-of-turn only
+
+## Coding Rules
+
+1. Insert tags only for content that clearly maps to a schema code.
+2. Apply multiple tags when the text explicitly supports more than one code.
+3. Prefer recall when evidence is explicit; do not invent or approximate tags.
+4. Use only tags from the schema list provided below.
+5. Preserve the original wording of the transcript exactly.
+
+## Schema
+
+{schema}
