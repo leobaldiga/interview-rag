@@ -51,16 +51,11 @@ def merge_chunk_outputs(coded_chunks: list[dict]) -> str:
 
 def main() -> None:
     settings = yaml.safe_load(Path("config/settings.yaml").read_text(encoding="utf-8"))
-    schema = json.loads(Path("config/schema.json").read_text(encoding="utf-8"))
 
     raw_dir = Path(settings["paths"]["raw_transcripts_dir"])
     chunk_codes_dir = Path(settings["paths"]["chunk_codes_dir"])
     coded_transcripts_dir = Path(settings["paths"]["coded_transcripts_dir"])
     manifest_dir = Path(settings["paths"]["manifest_dir"])
-
-    ensure_dir(chunk_codes_dir)
-    ensure_dir(coded_transcripts_dir)
-    ensure_dir(manifest_dir)
 
     parser = argparse.ArgumentParser(description="Code transcript txt files with llama.cpp")
     parser.add_argument(
@@ -73,11 +68,35 @@ def main() -> None:
         ),
     )
     parser.add_argument(
+        "--schema",
+        dest="schema_path",
+        default=None,
+        help=(
+            "Path to a schema JSON file to use for this run. "
+            "Overrides the schema path in config/settings.yaml."
+        ),
+    )
+    parser.add_argument(
         "--dry-run",
         action="store_true",
         help="Show which transcripts would be processed, but do not call the model or write outputs.",
     )
     args = parser.parse_args()
+
+    schema_path = (
+        Path(args.schema_path) if args.schema_path else Path(settings["paths"]["schema_file"])
+    )
+
+    if not schema_path.exists():
+        print(f"Schema file not found: {schema_path}")
+        return
+
+    schema = json.loads(schema_path.read_text(encoding="utf-8"))
+    print(f"Using schema: {schema_path}")
+
+    ensure_dir(chunk_codes_dir)
+    ensure_dir(coded_transcripts_dir)
+    ensure_dir(manifest_dir)
 
     if args.target_files:
         txt_files: list[Path] = []
@@ -99,6 +118,7 @@ def main() -> None:
         return
 
     if args.dry_run:
+        print(f"Dry run: using schema → {schema_path}")
         print("Dry run: would process the following transcripts (in order):")
         for p in txt_files:
             print(f"  - {p.name}")
@@ -171,6 +191,7 @@ def main() -> None:
         run_rows.append(
             {
                 "run_id": run_id,
+                "schema": schema_path.name,
                 "transcript_id": transcript_id,
                 "n_chunks": len(chunks),
                 "chunk_output_file": f"{transcript_id}.jsonl",
@@ -181,7 +202,6 @@ def main() -> None:
     manifest_path = manifest_dir / f"run_{run_id}.csv"
     save_run_manifest(run_rows, manifest_path)
     print(f"\nDone. Run manifest saved to {manifest_path}")
-
-
+    
 if __name__ == "__main__":
-    main()
+  main()

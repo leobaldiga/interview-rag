@@ -1,10 +1,13 @@
 project:
   name: farmer-interview-rag
-  description: RAG pipeline for coding farmer interview transcripts with a fixed P-S-T schema
+  description: >
+    Pipeline for qualitative coding of US row crop farmer interview transcripts
+    using a fixed P-S-T schema and a local llama.cpp inference server.
   seed: 42
 
 paths:
   raw_transcripts_dir: data/raw/transcripts
+  schema_file: config/schema.json
   cleaned_dir: data/interim/cleaned
   chunked_dir: data/interim/chunked
   embeddings_dir: data/processed/embeddings
@@ -21,10 +24,22 @@ paths:
 llm:
   provider: llama_cpp_server
   base_url: http://localhost:8080/v1
-  model: gpt-3.5-turbo
+  # Model filename loaded in your llama-server --model flag
+  model: gemma-4-E4B-it-Q8_0.gguf
   api_key: no-key
-  temperature: 0.35
-  top_p: 0.9
+
+  # Gemma 4 official recommended sampling parameters (Google / Unsloth docs)
+  # Do NOT lower temperature for structured tasks — Gemma 4 degrades below ~1.0
+  temperature: 1.0
+  top_k: 64
+  top_p: 0.95
+  min_p: 0.0
+  repeat_penalty: 1.0   # 1.0 = disabled; do not increase for tagging tasks
+
+  # Seed for reproducibility — passed per-request via the extra_body field
+  # Requires llama-server built with --seed support (default in recent builds)
+  seed: 42
+
   max_tokens: 4096
   stream: false
   timeout_seconds: 1800
@@ -42,7 +57,7 @@ embedding:
 chunking:
   method: paragraph_window
   target_chars: 2200
-  overlap_chars: 350
+  overlap_chars: 0
   min_chunk_chars: 600
   max_chunk_chars: 3200
   split_on:
