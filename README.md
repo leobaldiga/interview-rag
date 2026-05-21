@@ -89,7 +89,6 @@ python -m pip install requests pyyaml
 ## Running llama.cpp
 
 A typical local server command looks like this:
-
 ```bash
 docker run -d \
   --name llama-server \
@@ -102,7 +101,21 @@ docker run -d \
   --host 0.0.0.0 \
   --port 8080 \
   -ngl 99 \
-  -c 128000 \
+  -c 128000 \ 
+  --cache-prompt
+```
+
+CPU only fallback (VERY SLOW)
+```
+docker run -d \
+  --name llama-server-cpu \
+  -p 8080:8080 \
+  -v ~/models:/models \
+  ghcr.io/ggml-org/llama.cpp:server \
+  -m /models/gemma-4-E4B-it-Q8_0.gguf \
+  --host 0.0.0.0 \
+  --port 8080 \
+  -c 8192 \
   --cache-prompt
 ```
 
