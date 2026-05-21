@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import csv
 import json
 from datetime import datetime
@@ -61,7 +62,23 @@ def main() -> None:
     ensure_dir(coded_transcripts_dir)
     ensure_dir(manifest_dir)
 
-    txt_files = sorted(raw_dir.glob("*.txt"))
+    parser = argparse.ArgumentParser(description="Code transcript txt files with llama.cpp")
+    parser.add_argument(
+        "--file",
+        dest="target_file",
+        help="Optional single transcript filename to process from data/raw/transcripts/",
+    )
+    args = parser.parse_args()
+
+    if args.target_file:
+        target_path = raw_dir / args.target_file
+        if not target_path.is_file():
+            print(f"Requested file not found: {target_path}")
+            return
+        txt_files = [target_path]
+    else:
+        txt_files = sorted(raw_dir.glob("*.txt"))
+
     if not txt_files:
         print(f"No .txt transcripts found in {raw_dir}")
         return
@@ -143,3 +160,7 @@ def main() -> None:
     manifest_path = manifest_dir / f"run_{run_id}.csv"
     save_run_manifest(run_rows, manifest_path)
     print(f"\nDone. Run manifest saved to {manifest_path}")
+
+
+if __name__ == "__main__":
+    main()
