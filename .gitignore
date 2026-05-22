@@ -9,6 +9,7 @@ venv/
 # Project outputs
 data/metadata/*
 data/raw/*
+data/*
 data/processed/embeddings/*
 data/processed/index/*
 outputs/*
