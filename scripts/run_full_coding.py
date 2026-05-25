@@ -49,6 +49,22 @@ def merge_chunk_outputs(coded_chunks: list[dict]) -> str:
     return "\n\n---\n\n".join(parts).strip()
 
 
+def make_output_stem(transcript_id: str, date_suffix: str) -> str:
+    """Return the output file stem with _clean replaced by _coded_{MMDDYYYY}.
+
+    Examples
+    --------
+    >>> make_output_stem("20260331_ARINT006_clean", "05252026")
+    '20260331_ARINT006_coded_05252026'
+    >>> make_output_stem("20260331_ARINT006", "05252026")
+    '20260331_ARINT006_coded_05252026'
+    """
+    base = transcript_id
+    if base.endswith("_clean"):
+        base = base[: -len("_clean")]
+    return f"{base}_coded_{date_suffix}"
+
+
 def main() -> None:
     settings = yaml.safe_load(Path("config/settings.yaml").read_text(encoding="utf-8"))
 
@@ -124,12 +140,15 @@ def main() -> None:
             print(f"  - {p.name}")
         return
 
-    run_id = datetime.now().strftime("%Y-%m-%d_%H%M%S")
+    now = datetime.now()
+    run_id = now.strftime("%Y-%m-%d_%H%M%S")
+    date_suffix = now.strftime("%m%d%Y")
     run_rows = []
 
     for txt_file in txt_files:
         transcript_id = txt_file.stem
-        print(f"\nProcessing: {transcript_id}")
+        output_stem = make_output_stem(transcript_id, date_suffix)
+        print(f"\nProcessing: {transcript_id}  →  {output_stem}")
 
         raw_text = txt_file.read_text(encoding="utf-8")
         chunks = chunk_transcript(
@@ -140,7 +159,7 @@ def main() -> None:
 
         coded_chunks = []
         total_chunks = len(chunks)
-        jsonl_path = chunk_codes_dir / f"{transcript_id}.jsonl"
+        jsonl_path = chunk_codes_dir / f"{output_stem}.jsonl"
 
         if jsonl_path.exists():
             jsonl_path.unlink()
@@ -186,22 +205,23 @@ def main() -> None:
                 f.write(json.dumps(record, ensure_ascii=False) + "\n")
 
         merged_md = merge_chunk_outputs(coded_chunks)
-        save_markdown(merged_md, coded_transcripts_dir / f"{transcript_id}.md")
+        save_markdown(merged_md, coded_transcripts_dir / f"{output_stem}.md")
 
         run_rows.append(
             {
                 "run_id": run_id,
                 "schema": schema_path.name,
                 "transcript_id": transcript_id,
+                "output_stem": output_stem,
                 "n_chunks": len(chunks),
-                "chunk_output_file": f"{transcript_id}.jsonl",
-                "merged_output_file": f"{transcript_id}.md",
+                "chunk_output_file": f"{output_stem}.jsonl",
+                "merged_output_file": f"{output_stem}.md",
             }
         )
 
     manifest_path = manifest_dir / f"run_{run_id}.csv"
     save_run_manifest(run_rows, manifest_path)
     print(f"\nDone. Run manifest saved to {manifest_path}")
-    
+
 if __name__ == "__main__":
-  main()
+    main()
