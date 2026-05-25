@@ -8,24 +8,26 @@ A local Python pipeline for coding long farmer interview transcripts with a fixe
 - Splits each transcript into overlapping chunks
 - Sends each chunk to a local `llama.cpp` OpenAI-compatible chat endpoint
 - Applies a fixed P-S-T qualitative coding schema
-- Saves chunk-level outputs as JSONL
+- Saves chunk-level outputs as JSONL (filename includes date of run)
 - Saves merged transcript outputs as Markdown
 - Writes a run manifest for tracking each coding run
+- Generates per-interview summary documents with farm profile headers and per-code verbatim quote tables
 
 ## Current status
 
-This is an early but working local pipeline.
+Core coding pipeline is working. Summary generation is newly implemented.
 
 Current implemented components:
 
 - Project scaffold and directory structure
 - `settings.yaml` configuration file
-- `schema.json` coding schema file
+- `schema.json` coding schema (7 primary themes, 24 subthemes)
 - Chunking logic for long transcripts
 - Prompt builder for schema-aware coding prompts
 - Local `llama-server` API integration
 - Incremental JSONL writing after each completed chunk
-- Merged Markdown export for each transcript
+- Merged Markdown export per transcript with date-stamped filenames
+- Per-interview summary generation with LLM-extracted farm profile and best-quote tables
 
 Planned improvements:
 
@@ -57,11 +59,13 @@ interview-rag/
 │   ├── retrieval_logs/
 │   └── summaries/
 ├── scripts/
-│   └── run_full_coding.py
+│   ├── run_full_coding.py
+│   └── generate_summaries.py
 ├── src/
 │   ├── chunking.py
 │   ├── code_transcript.py
-│   └── prompt_builder.py
+│   ├── prompt_builder.py
+│   └── summarize.py
 └── tests/
 ```
 
@@ -101,7 +105,7 @@ docker run -d \
   --host 0.0.0.0 \
   --port 8080 \
   -ngl 99 \
-  -c 128000 \ 
+  -c 128000 \
   --cache-prompt
 ```
 
@@ -139,6 +143,37 @@ Defines:
 
 Contains the qualitative coding schema used by the prompt builder and coding pipeline.
 
+The schema uses a three-level P-S-T hierarchy:
+
+- **P (Primary theme)** — top-level thematic domain
+- **S (Subtheme)** — mid-level grouping within a primary theme
+- **T (Tertiary tag)** — specific coded concept, inserted inline in the transcript
+
+Tags are written in the format:
+```
+<P_PRIMARY:S_SECONDARY:T:tag-text>
+```
+
+Current primary themes:
+
+| Code | Theme |
+|------|-------|
+| `P_AOP` | Agricultural Operation & Practice |
+| `P_SH` | Soil Health |
+| `P_MSK` | Management Systems and Knowledge |
+| `P_RRM` | Resilience and Risk Management |
+| `P_CEF` | Climate and External Factors |
+| `P_FOSC` | Future Outlook and System Change |
+| `P_ENP` | Energy Policy and Transition |
+
+`P_ENP` subthemes:
+
+| Code | Subtheme |
+|------|----------|
+| `S_EFC` | On-Farm Energy Use and Costs |
+| `S_REA` | Renewable Energy Adoption |
+| `S_EPR` | Energy Policy and Regulatory Environment |
+
 ## Input data
 
 Place transcript files here:
@@ -153,13 +188,21 @@ Expected input format:
 - One transcript per file
 - Filename becomes `transcript_id`
 
+Recommended naming convention:
+
+```text
+data/raw/transcripts/YYYYMMDD_ARINTXXX_clean.txt
+```
+
 Example:
 
 ```text
-data/raw/transcripts/20260401_ARINT001.txt
+data/raw/transcripts/20260331_ARINT006_clean.txt
 ```
 
 ## Running the pipeline
+
+### Step 1: Code transcripts
 
 From the project root:
 
@@ -168,20 +211,61 @@ source .venv/bin/activate
 PYTHONPATH=. python scripts/run_full_coding.py
 ```
 
+To process a specific file:
+
+```bash
+PYTHONPATH=. python scripts/run_full_coding.py --file 20260331_ARINT006_clean.txt
+```
+
+To preview which files would be processed without running the model:
+
+```bash
+PYTHONPATH=. python scripts/run_full_coding.py --dry-run
+```
+
 Example terminal output:
 
 ```text
-Processing: 20260401_ARINT001
-  Coding chunk 0001/0042 | 20260401_ARINT001__00000 | 2082 chars
+Processing: 20260331_ARINT006_clean  →  20260331_ARINT006_coded_05252026
+  Coding chunk 0001/0042 | 20260331_ARINT006_clean__00000 | 2082 chars
+    ↳ 14.3s | prompt=1204 tokens | completion=892 tokens | finish=stop
 ```
 
-The script currently:
+### Step 2: Generate summaries
 
-- Prints progress with numbered chunks
-- Prints coded output after each chunk finishes
-- Appends each finished chunk immediately to the transcript JSONL file
+After coding is complete, generate per-interview summary documents:
+
+```bash
+PYTHONPATH=. python scripts/generate_summaries.py
+```
+
+To summarize a specific coded JSONL file:
+
+```bash
+PYTHONPATH=. python scripts/generate_summaries.py --file 20260331_ARINT006_coded_05252026.jsonl
+```
+
+The summary script:
+
+1. Parses all tagged speaker turns from the chunk-level JSONL
+2. Calls the LLM to extract a farm profile header (demographics, rotation, tillage, cover crops, tenure, etc.) from the raw transcript
+3. Calls the LLM once per unique tag to select the single most substantive verbatim quote from all candidate passages
+4. Renders a Markdown file with a farm profile table and per-subtheme quote tables
 
 ## Outputs
+
+### Output file naming
+
+All output files include the date the coding run was completed:
+
+```text
+Input:  20260331_ARINT006_clean.txt
+Output: 20260331_ARINT006_coded_05252026.md
+        20260331_ARINT006_coded_05252026.jsonl
+        20260331_ARINT006_coded_05252026_summary.md
+```
+
+The date suffix format is `MMDDYYYY`.
 
 ### Chunk-level JSONL
 
@@ -191,7 +275,7 @@ Written to:
 outputs/chunk_codes/
 ```
 
-Each line contains a JSON record with fields such as:
+Each line contains a JSON record with fields:
 
 - `run_id`
 - `transcript_id`
@@ -211,7 +295,20 @@ Written to:
 outputs/coded_transcripts/
 ```
 
-This contains the chunk outputs stitched together into a single Markdown file for easier review.
+Chunk outputs stitched into a single Markdown file separated by `---` dividers, each chunk preceded by a comment with its chunk ID and character offsets.
+
+### Interview summary
+
+Written to:
+
+```text
+outputs/summaries/
+```
+
+Each summary contains:
+
+- **Farm profile table** — LLM-extracted fields including farmer ID, location, farm size, land tenure, years farming, primary crops, crop rotation, cover cropping, tillage system, irrigation, and notable context
+- **Coded theme tables** — one section per primary theme, one table per subtheme, with the single best verbatim quote selected per tag
 
 ### Run manifest
 
@@ -221,7 +318,7 @@ Written to:
 data/processed/manifests/
 ```
 
-This tracks which transcripts were processed in a run and what files were produced.
+Tracks which transcripts were processed in a run, what schema was used, and what output files were produced. Fields include `run_id`, `schema`, `transcript_id`, `output_stem`, `n_chunks`, `chunk_output_file`, and `merged_output_file`.
 
 ## Development notes
 
@@ -230,10 +327,9 @@ This project is intentionally being built in stages:
 1. Chunk long transcripts reliably
 2. Code each chunk against the schema
 3. Save outputs safely after each chunk
-4. Add validation and resumability
-5. Add embeddings and retrieval for a fuller RAG workflow
-
-That staged approach makes debugging easier and reduces the risk of losing long-running local jobs.
+4. Generate per-interview summaries with farm profile and best-quote tables
+5. Add validation and resumability
+6. Add embeddings and retrieval for a fuller RAG workflow
 
 ## Next priorities
 
