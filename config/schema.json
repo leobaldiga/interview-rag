@@ -5,7 +5,8 @@
     "P_MSK": "Management Systems and Knowledge",
     "P_RRM": "Resilience and Risk Management",
     "P_CEF": "Climate and External Factors",
-    "P_FOSC": "Future Outlook and System Change"
+    "P_FOSC": "Future Outlook and System Change",
+    "P_ENP": "Energy Policy and Transition"
   },
   "tag_hierarchy": {
     "P_AOP": {
@@ -201,6 +202,34 @@
           "FOSC-FAG-Farming identity and legacy as barrier or enabler of transition",
           "FOSC-FAG-Attitudes toward being an early adopter vs. conventional farmer",
           "FOSC-FAG-Willingness to engage with policy or advocacy"
+        ]
+      }
+    },
+    "P_ENP": {
+      "S_EFC": {
+        "_comment": "On-Farm Energy Use and Costs — covers farmer awareness and management of energy expenditures across field operations, the rising cost of diesel and propane as operational pressures, and energy efficiency as a farm management concern",
+        "T": [
+          "ENP-EFC-Fuel and energy costs as operational pressure",
+          "ENP-EFC-Grain drying and irrigation energy demands",
+          "ENP-EFC-Energy efficiency measures adopted in operations"
+        ]
+      },
+      "S_REA": {
+        "_comment": "Renewable Energy Adoption — covers farmer interest in, experience with, or barriers to on-farm renewable energy (solar panels, wind leases), the role of land rental income from wind and solar leases, and perceptions of how energy transition interacts with farming identity and land use",
+        "T": [
+          "ENP-REA-Interest in or adoption of on-farm solar energy",
+          "ENP-REA-Wind lease income and land use tradeoffs",
+          "ENP-REA-Barriers to renewable energy adoption (cost, knowledge, infrastructure)",
+          "ENP-REA-Perceived compatibility of renewables with farming identity and land use"
+        ]
+      },
+      "S_EPR": {
+        "_comment": "Energy Policy and Regulatory Environment — covers farmer perceptions of federal and state energy policy (IRA incentives, biofuel mandates, RFS, ethanol markets), the impact of energy price volatility on input costs (nitrogen fertilizer, fuel), and attitudes toward government intervention in energy markets",
+        "T": [
+          "ENP-EPR-Awareness of federal energy incentives (IRA, REAP grants)",
+          "ENP-EPR-Perceptions of biofuel mandates and ethanol market influence",
+          "ENP-EPR-Impact of energy price volatility on fertilizer and input costs",
+          "ENP-EPR-Attitudes toward government role in energy transition"
         ]
       }
     }
